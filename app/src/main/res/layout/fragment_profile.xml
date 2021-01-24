@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.fragments.ProfileFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/component_margin_top"
+            android:layout_marginBottom="@dimen/component_margin_bottom"
+            android:layout_weight="1"
+            android:text="@string/fragment_profile_title" />
+
+        <Button
+            android:id="@+id/profile_sign_out"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/profile_sign_out_button" />
+
+    </LinearLayout>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/component_margin_top"
+        android:layout_marginBottom="@dimen/component_margin_bottom">
+
+        <ImageView
+            android:id="@+id/profile_pic"
+            android:layout_width="108dp"
+            android:layout_height="108dp"
+            android:layout_gravity="center"
+            android:contentDescription="@string/profile_picture"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_profile_24dp" />
+
+        <ProgressBar
+            android:id="@+id/profile_progress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:visibility="gone"
+            app:layout_anchor="@id/profile_pic"
+            app:layout_anchorGravity="center" />
+
+        <ImageButton
+            android:id="@+id/profile_pic_edit"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginEnd="@dimen/component_margin_right"
+            android:layout_marginBottom="@dimen/component_margin_bottom"
+            android:background="@drawable/circle_background"
+            android:contentDescription="@string/edit_profile_picture"
+            android:src="@drawable/ic_edit_24dp"
+            app:layout_anchor="@id/profile_pic"
+            app:layout_anchorGravity="end|bottom" />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/component_margin_top"
+        android:text="@string/profile_name" />
+
+    <TextView
+        android:id="@+id/profile_name_text"
+        style="@style/AppTextView"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginBottom="@dimen/component_margin_bottom"
+        android:drawableEnd="@drawable/ic_edit_24dp"
+        android:gravity="start|center_vertical" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/component_margin_top"
+        android:text="@string/profile_email" />
+
+    <TextView
+        android:id="@+id/profile_email_text"
+        style="@style/AppTextView"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginBottom="@dimen/component_margin_bottom"
+        android:gravity="start|center_vertical" />
+
+    <Button
+        android:id="@+id/profile_remove_account"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/component_margin_top"
+        android:text="@string/profile_delete_account_button" />
+
+</LinearLayout>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/create_review_nav_graph"
+    app:startDestination="@id/companiesListFragment">
+
+    <fragment
+        android:id="@+id/companiesListFragment"
+        android:name="com.polamokh.homeinternetreview.ui.fragments.CompaniesListFragment"
+        android:label="@string/fragment_companies_list_title"
+        tools:layout="@layout/fragment_companies_list">
+        <action
+            android:id="@+id/action_companiesListFragment_to_governoratesListFragment"
+            app:destination="@id/governoratesListFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/governoratesListFragment"
+        android:name="com.polamokh.homeinternetreview.ui.fragments.GovernoratesListFragment"
+        android:label="@string/fragment_governorates_list_title"
+        tools:layout="@layout/fragment_governorates_list">
+        <action
+            android:id="@+id/action_governoratesListFragment_to_reviewDetailsOptionFragment"
+            app:destination="@id/reviewDetailsOptionFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/reviewDetailsOptionFragment"
+        android:name="com.polamokh.homeinternetreview.ui.fragments.ReviewDetailsOptionFragment"
+        android:label="@string/fragment_review_details_option_title"
+        tools:layout="@layout/fragment_review_details_option">
+        <action
+            android:id="@+id/action_reviewDetailsOptionFragment_to_createReviewFragment"
+            app:destination="@id/createReviewFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
+        <action
+            android:id="@+id/action_reviewDetailsOptionFragment_to_createDetailedReviewFragment"
+            app:destination="@id/createDetailedReviewFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/createReviewFragment"
+        android:name="com.polamokh.homeinternetreview.ui.fragments.CreateReviewFragment"
+        android:label="@string/fragment_create_review_title"
+        tools:layout="@layout/fragment_create_review" />
+
+    <fragment
+        android:id="@+id/createDetailedReviewFragment"
+        android:name="com.polamokh.homeinternetreview.ui.fragments.CreateDetailedReviewFragment"
+        android:label="@string/fragment_create_review_title"
+        tools:layout="@layout/fragment_create_detailed_review" />
+
+</navigation>

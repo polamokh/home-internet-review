@@ -1,0 +1,78 @@
+<resources>
+    <string name="app_name">Home Internet Review</string>
+
+    <string name="review_description">Describe your opinion (optional)</string>
+    <string name="review_post_button">Post</string>
+
+    <string name="detailed_review_speed">Speed</string>
+    <string name="detailed_review_price">Price</string>
+    <string name="detailed_review_reliability">Reliability</string>
+    <string name="detailed_review_customer_service">Customer Service</string>
+
+    <string name="action_reviews_title">Reviews</string>
+    <string name="action_standings_title">Standings</string>
+    <string name="action_profile_title">Profile</string>
+
+    <string name="review_item_profile_picture">Profile Picture</string>
+
+    <string name="profile_picture">Profile Picture</string>
+    <string name="profile_name">Name</string>
+    <string name="profile_email">Email Address</string>
+    <string name="profile_change_button">Change</string>
+    <string name="profile_reset_password_button">Reset Password</string>
+    <string name="profile_delete_account_button">Delete Account</string>
+    <string name="profile_sign_in_button">Sign in</string>
+    <string name="profile_sign_out_button">Sign out</string>
+
+    <string name="fragment_create_review_title">Create review</string>
+    <string name="fragment_review_details_option_title">Select your review details</string>
+    <string name="review_details_option_quick_button">Quick</string>
+    <string name="review_details_option_detailed_button">Detailed (Recommended)</string>
+
+    <string name="fragment_home_title">Reviews</string>
+    <string name="fragment_profile_title">Profile</string>
+    <string name="fragment_standings_title">Standings</string>
+
+    <string name="company_item_image">Company Image</string>
+    <string name="fragment_companies_list_title">Pick a company</string>
+    <string name="fragment_governorates_list_title">Pick a governorate</string>
+    <string name="edit_profile_save_changes">Save changes</string>
+    <string name="edit_profile_picture">Edit Profile Picture</string>
+
+    <string-array name="governorates">
+        <item>Cairo</item>
+        <item>Giza</item>
+        <item>Alexandria</item>
+        <item>Dakahlia</item>
+        <item>Red Sea</item>
+        <item>Beheira</item>
+        <item>Fayoum</item>
+        <item>Gharbiya</item>
+        <item>Ismailia</item>
+        <item>Monofia</item>
+        <item>Minya</item>
+        <item>Qaliubiya</item>
+        <item>New Valley</item>
+        <item>Suez</item>
+        <item>Aswan</item>
+        <item>Assiut</item>
+        <item>Beni Suef</item>
+        <item>Port Said</item>
+        <item>Damietta</item>
+        <item>Sharkia</item>
+        <item>South Sinai</item>
+        <item>Kafr Al Sheikh</item>
+        <item>Matrouh</item>
+        <item>Luxor</item>
+        <item>Qena</item>
+        <item>North Sinai</item>
+        <item>Sohag</item>
+    </string-array>
+
+    <string-array name="companies">
+        <item>WE</item>
+        <item>Orange</item>
+        <item>Etisalat</item>
+        <item>Vodafone</item>
+    </string-array>
+</resources>

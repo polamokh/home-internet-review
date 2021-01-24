@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "123625297518",
+    "project_id": "home-internet-review",
+    "storage_bucket": "home-internet-review.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:123625297518:android:f94aece7f796171162387f",
+        "android_client_info": {
+          "package_name": "com.polamokh.homeinternetreview"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "123625297518-ki7m9jg5tlo1fipon7pccdlqrg5t24rg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.polamokh.homeinternetreview",
+            "certificate_hash": "75f3916aad8d2acf6cef3e67a42da0a4ac8ceb87"
+          }
+        },
+        {
+          "client_id": "123625297518-pv5rjmqsj2qbtej843jfrvd5fl9lmike.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA39awMPNoBtgYMb823jF2KqVfJVpPbhC8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "123625297518-pv5rjmqsj2qbtej843jfrvd5fl9lmike.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

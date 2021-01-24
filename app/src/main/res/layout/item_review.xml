@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/component_margin"
+    android:background="@drawable/outline_item_review"
+    android:padding="@dimen/component_padding">
+
+    <ImageView
+        android:id="@+id/review_item_profile_pic"
+        android:layout_width="54dp"
+        android:layout_height="54dp"
+        android:contentDescription="@string/review_item_profile_picture"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_profile_24dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <RatingBar
+        android:id="@+id/review_item_rating"
+        style="@style/Widget.AppCompat.RatingBar.Indicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/component_margin"
+        android:isIndicator="true"
+        android:numStars="5"
+        app:layout_constraintBottom_toBottomOf="@id/review_item_profile_pic"
+        app:layout_constraintLeft_toRightOf="@id/review_item_profile_pic"
+        app:layout_constraintTop_toTopOf="@id/review_item_profile_pic" />
+
+    <TextView
+        android:id="@+id/review_item_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/component_margin_top"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/review_item_profile_pic" />
+
+    <TextView
+        android:id="@+id/review_item_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/component_margin_top"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/review_item_description" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

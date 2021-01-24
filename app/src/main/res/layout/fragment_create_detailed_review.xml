@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.fragments.CreateDetailedReviewFragment">
+
+    <TextView
+        android:id="@+id/detailed_review_speed_text"
+        style="@style/AppTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/detailed_review_speed"
+        app:layout_constraintBottom_toBottomOf="@+id/detailed_review_speed_rating"
+        app:layout_constraintEnd_toStartOf="@+id/detailed_review_speed_rating"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/detailed_review_speed_rating" />
+
+    <RatingBar
+        android:id="@+id/detailed_review_speed_rating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/component_margin_top"
+        android:layout_marginBottom="@dimen/component_margin_bottom"
+        android:numStars="5"
+        android:stepSize="0.5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/detailed_review_speed_text"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/detailed_review_price_text"
+        style="@style/AppTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/detailed_review_price"
+        app:layout_constraintBottom_toBottomOf="@id/detailed_review_price_rating"
+        app:layout_constraintEnd_toStartOf="@id/detailed_review_price_rating"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/detailed_review_price_rating" />
+
+    <RatingBar
+        android:id="@+id/detailed_review_price_rating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/component_margin_top"
+        android:layout_marginBottom="@dimen/component_margin_bottom"
+        android:numStars="5"
+        android:stepSize="0.5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@id/detailed_review_price_text"
+        app:layout_constraintTop_toBottomOf="@id/detailed_review_speed_rating" />
+
+    <TextView
+        android:id="@+id/detailed_review_reliability_text"
+        style="@style/AppTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/detailed_review_reliability"
+        app:layout_constraintBottom_toBottomOf="@id/detailed_review_reliability_rating"
+        app:layout_constraintEnd_toStartOf="@id/detailed_review_reliability_rating"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/detailed_review_reliability_rating" />
+
+    <RatingBar
+        android:id="@+id/detailed_review_reliability_rating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/component_margin_top"
+        android:layout_marginBottom="@dimen/component_margin_bottom"
+        android:numStars="5"
+        android:stepSize="0.5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@id/detailed_review_reliability_text"
+        app:layout_constraintTop_toBottomOf="@id/detailed_review_price_rating" />
+
+    <TextView
+        android:id="@+id/detailed_review_customer_service_text"
+        style="@style/AppTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/detailed_review_customer_service"
+        app:layout_constraintBottom_toBottomOf="@id/detailed_review_customer_service_rating"
+        app:layout_constraintEnd_toStartOf="@id/detailed_review_customer_service_rating"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/detailed_review_customer_service_rating" />
+
+    <RatingBar
+        android:id="@+id/detailed_review_customer_service_rating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/component_margin_top"
+        android:layout_marginBottom="@dimen/component_margin_bottom"
+        android:numStars="5"
+        android:stepSize="0.5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@id/detailed_review_customer_service_text"
+        app:layout_constraintTop_toBottomOf="@id/detailed_review_reliability_rating" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/review_description_text"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/component_margin_top"
+        android:layout_marginBottom="@dimen/component_margin_bottom"
+        android:hint="@string/review_description"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/detailed_review_customer_service_rating">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="top"
+            android:inputType="textMultiLine" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
