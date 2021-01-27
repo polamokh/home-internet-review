@@ -24,10 +24,6 @@
         <activity android:name=".ui.activities.CreateReviewActivity" />
 
         <activity
-            android:name=".ui.activities.EditProfileNameActivity"
-            android:label="Edit Profile Name" />
-
-        <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" />
     </application>

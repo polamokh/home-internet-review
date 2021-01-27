@@ -6,6 +6,8 @@
     <dimen name="margin_top">16dp</dimen>
     <dimen name="margin_bottom">16dp</dimen>
 
+    <dimen name="padding">16dp</dimen>
+
     <dimen name="component_margin">4dp</dimen>
     <dimen name="component_margin_top">4dp</dimen>
     <dimen name="component_margin_left">4dp</dimen>

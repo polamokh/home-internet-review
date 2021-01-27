@@ -9,13 +9,13 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.polamokh.homeinternetreview.R;
-import com.polamokh.homeinternetreview.ui.listeners.IOnItemClickListener;
+import com.polamokh.homeinternetreview.ui.listeners.IOnItemSelectListener;
 
 public class GovernoratesAdapter extends RecyclerView.Adapter<GovernoratesAdapter.GovernorateViewHolder> {
     private String[] names;
-    private IOnItemClickListener listener;
+    private IOnItemSelectListener listener;
 
-    public GovernoratesAdapter(String[] names, IOnItemClickListener listener) {
+    public GovernoratesAdapter(String[] names, IOnItemSelectListener listener) {
         this.names = names;
         this.listener = listener;
     }
@@ -32,7 +32,7 @@ public class GovernoratesAdapter extends RecyclerView.Adapter<GovernoratesAdapte
     public void onBindViewHolder(@NonNull GovernorateViewHolder holder, int position) {
         holder.name.setText(names[position]);
         holder.itemView.setOnClickListener(v -> {
-            listener.OnItemClicked(names[position]);
+            listener.OnItemSelected(names[position]);
         });
     }
 

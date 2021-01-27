@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
@@ -14,9 +13,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.polamokh.homeinternetreview.R;
 import com.polamokh.homeinternetreview.ui.adapters.CompaniesAdapter;
-import com.polamokh.homeinternetreview.ui.listeners.IOnItemClickListener;
+import com.polamokh.homeinternetreview.ui.listeners.IOnItemSelectListener;
 
-public class CompaniesListFragment extends Fragment implements IOnItemClickListener {
+public class CompaniesListFragment extends Fragment implements IOnItemSelectListener {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -31,7 +30,7 @@ public class CompaniesListFragment extends Fragment implements IOnItemClickListe
     }
 
     @Override
-    public void OnItemClicked(Object object) {
+    public void OnItemSelected(Object object) {
         Bundle bundle = new Bundle();
         bundle.putString(CreateReviewFragment.EXTRA_COMPANY_NAME, object.toString());
 

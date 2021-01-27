@@ -13,9 +13,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.polamokh.homeinternetreview.R;
 import com.polamokh.homeinternetreview.ui.adapters.GovernoratesAdapter;
-import com.polamokh.homeinternetreview.ui.listeners.IOnItemClickListener;
+import com.polamokh.homeinternetreview.ui.listeners.IOnItemSelectListener;
 
-public class GovernoratesListFragment extends Fragment implements IOnItemClickListener {
+public class GovernoratesListFragment extends Fragment implements IOnItemSelectListener {
 
 
     @Override
@@ -33,7 +33,7 @@ public class GovernoratesListFragment extends Fragment implements IOnItemClickLi
     }
 
     @Override
-    public void OnItemClicked(Object object) {
+    public void OnItemSelected(Object object) {
         Bundle bundle = getArguments();
         bundle.putString(CreateReviewFragment.EXTRA_GOVERNORATE_NAME, object.toString());
 

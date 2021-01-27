@@ -24,12 +24,12 @@ public final class FirebaseAuthUtils {
 
     }
 
-    private static Intent createAuthUiIntent() {
-        List<AuthUI.IdpConfig> providers = Arrays.asList(
-                new AuthUI.IdpConfig.EmailBuilder().build(),
-                new AuthUI.IdpConfig.GoogleBuilder().build()
-        );
+    private static List<AuthUI.IdpConfig> getAvailableProviders() {
+        return Arrays.asList(new AuthUI.IdpConfig.EmailBuilder().build(),
+                new AuthUI.IdpConfig.GoogleBuilder().build());
+    }
 
+    private static Intent createAuthUiIntent(List<AuthUI.IdpConfig> providers) {
         return AuthUI.getInstance()
                 .createSignInIntentBuilder()
                 .setIsSmartLockEnabled(false)
@@ -37,14 +37,14 @@ public final class FirebaseAuthUtils {
                 .build();
     }
 
-    public static void startAuthUserActivity(Activity activity) {
-        activity.startActivityForResult(createAuthUiIntent(),
-                RC_SIGN_IN);
+    public static void startAuthUserActivity(Activity activity, int requestCode) {
+        activity.startActivityForResult(createAuthUiIntent(getAvailableProviders()),
+                requestCode);
     }
 
-    public static void startAuthUserActivity(Fragment fragment) {
-        fragment.startActivityForResult(createAuthUiIntent(),
-                RC_SIGN_IN);
+    public static void startAuthUserActivity(Fragment fragment, int requestCode) {
+        fragment.startActivityForResult(createAuthUiIntent(getAvailableProviders()),
+                requestCode);
     }
 
     public static Task<Void> updateProfileName(String newName) {

@@ -10,14 +10,14 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.polamokh.homeinternetreview.R;
-import com.polamokh.homeinternetreview.ui.listeners.IOnItemClickListener;
+import com.polamokh.homeinternetreview.ui.listeners.IOnItemSelectListener;
 
 public class CompaniesAdapter extends RecyclerView.Adapter<CompaniesAdapter.CompanyViewHolder> {
     private String[] names;
     private int[] images;
-    private IOnItemClickListener listener;
+    private IOnItemSelectListener listener;
 
-    public CompaniesAdapter(String[] names, IOnItemClickListener listener) {
+    public CompaniesAdapter(String[] names, IOnItemSelectListener listener) {
         this.names = names;
         this.images = new int[]{R.drawable.we,
                 R.drawable.orange,
@@ -40,7 +40,7 @@ public class CompaniesAdapter extends RecyclerView.Adapter<CompaniesAdapter.Comp
         holder.image.setImageResource(images[position]);
 
         holder.itemView.setOnClickListener(v -> {
-            listener.OnItemClicked(names[position]);
+            listener.OnItemSelected(names[position]);
         });
     }
 

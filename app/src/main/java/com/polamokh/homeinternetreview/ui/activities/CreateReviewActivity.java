@@ -64,7 +64,8 @@ public class CreateReviewActivity extends AppCompatActivity {
 
         authStateListener = firebaseAuth -> {
             if (firebaseAuth.getCurrentUser() == null)
-                FirebaseAuthUtils.startAuthUserActivity(CreateReviewActivity.this);
+                FirebaseAuthUtils.startAuthUserActivity(CreateReviewActivity.this,
+                        FirebaseAuthUtils.RC_SIGN_IN);
         };
     }
 
@@ -92,31 +93,33 @@ public class CreateReviewActivity extends AppCompatActivity {
             if (requestCode == FirebaseAuthUtils.RC_SIGN_IN) {
                 IdpResponse response = IdpResponse.fromResultIntent(data);
                 FirebaseUser user = firebaseAuth.getCurrentUser();
-
-                if (response.isNewUser() && user.getPhotoUrl() != null) {
-                    Glide.with(this)
-                            .asBitmap()
-                            .load(user.getPhotoUrl())
-                            .into(new CustomTarget<Bitmap>() {
-                                @Override
-                                public void onResourceReady(@NonNull Bitmap resource,
-                                                            Transition<? super Bitmap> transition) {
-                                    FirebaseStorageUtils.uploadProfilePictureAsStream(user.getUid(),
-                                            BitmapUtils.convertBitmapToInputStream(resource))
-                                            .addOnCompleteListener(task -> {
-                                                if (task.isSuccessful())
-                                                    FirebaseAuthUtils
-                                                            .updateProfilePicture(task.getResult());
-                                            });
-                                }
-
-                                @Override
-                                public void onLoadCleared(@Nullable Drawable placeholder) {
-                                }
-                            });
-                }
+                if (response.isNewUser() && user.getPhotoUrl() != null)
+                    handleNewUserWithProfilePicture(user);
             }
         } else
             finish();
+    }
+
+    private void handleNewUserWithProfilePicture(FirebaseUser user) {
+        Glide.with(this)
+                .asBitmap()
+                .load(user.getPhotoUrl())
+                .into(new CustomTarget<Bitmap>() {
+                    @Override
+                    public void onResourceReady(@NonNull Bitmap resource,
+                                                Transition<? super Bitmap> transition) {
+                        FirebaseStorageUtils.uploadProfilePictureAsStream(user.getUid(),
+                                BitmapUtils.convertBitmapToInputStream(resource))
+                                .addOnCompleteListener(task -> {
+                                    if (task.isSuccessful())
+                                        FirebaseAuthUtils
+                                                .updateProfilePicture(task.getResult());
+                                });
+                    }
+
+                    @Override
+                    public void onLoadCleared(@Nullable Drawable placeholder) {
+                    }
+                });
     }
 }

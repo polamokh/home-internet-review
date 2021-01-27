@@ -17,9 +17,8 @@
 
     <string name="profile_picture">Profile Picture</string>
     <string name="profile_name">Name</string>
+    <string name="profile_password">Password</string>
     <string name="profile_email">Email Address</string>
-    <string name="profile_change_button">Change</string>
-    <string name="profile_reset_password_button">Reset Password</string>
     <string name="profile_delete_account_button">Delete Account</string>
     <string name="profile_sign_in_button">Sign in</string>
     <string name="profile_sign_out_button">Sign out</string>
@@ -36,8 +35,25 @@
     <string name="company_item_image">Company Image</string>
     <string name="fragment_companies_list_title">Pick a company</string>
     <string name="fragment_governorates_list_title">Pick a governorate</string>
-    <string name="edit_profile_save_changes">Save changes</string>
     <string name="edit_profile_picture">Edit Profile Picture</string>
+
+    <string name="dialog_edit_profile_name_title">Change Name</string>
+    <string name="dialog_edit_profile_name_save_btn">Change</string>
+    <string name="dialog_edit_profile_name_discard_btn">Discard</string>
+
+    <string name="dialog_delete_profile_title">Are you sure?</string>
+    <string name="dialog_delete_profile_message">Deleting your account will remove profile information
+        and posted reviews. This action can not be recovered.</string>
+    <string name="dialog_delete_profile_delete_btn">Delete</string>
+    <string name="dialog_delete_profile_cancel_btn">Cancel</string>
+
+    <string name="dialog_verify_profile_title">Verify your account</string>
+    <string name="dialog_verify_profile_verify_btn">Verify</string>
+    <string name="dialog_verify_profile_cancel_btn">Cancel</string>
+
+    <string name="server_client_id">123625297518-pv5rjmqsj2qbtej843jfrvd5fl9lmike.apps.googleusercontent.com</string>
+
+    <string name="loading_text">Loading…</string>
 
     <string-array name="governorates">
         <item>Cairo</item>
