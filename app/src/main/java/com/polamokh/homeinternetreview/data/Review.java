@@ -1,6 +1,6 @@
 package com.polamokh.homeinternetreview.data;
 
-public class Review implements Comparable<Review> {
+public class Review {
     private String company;
     private double rating;
     private String governorate;
@@ -66,10 +66,5 @@ public class Review implements Comparable<Review> {
 
     public void setUserId(String userId) {
         this.userId = userId;
-    }
-
-    @Override
-    public int compareTo(Review o) {
-        return Long.compare(this.getTime(), o.getTime());
     }
 }

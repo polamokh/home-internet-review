@@ -9,8 +9,13 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 import com.polamokh.homeinternetreview.R;
+import com.polamokh.homeinternetreview.data.Company;
 import com.polamokh.homeinternetreview.data.Review;
+import com.polamokh.homeinternetreview.data.dao.CompanyDao;
 import com.polamokh.homeinternetreview.viewmodel.ReviewViewModel;
 
 abstract class AbstractCreateReviewFragment extends Fragment {
@@ -19,6 +24,7 @@ abstract class AbstractCreateReviewFragment extends Fragment {
 
     ReviewViewModel reviewViewModel;
 
+
     EditText descriptionText;
 
     abstract void initializeUi(View view);
@@ -26,7 +32,13 @@ abstract class AbstractCreateReviewFragment extends Fragment {
     abstract Review getReviewDetails();
 
     private void createReview() {
-        reviewViewModel.create(getReviewDetails());
+        Review review = getReviewDetails();
+        reviewViewModel.create(review)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful())
+                        CompanyDao.getInstance()
+                                .updateCompaniesStandings(review, CompanyDao.updateState.INSERTED);
+                });
         requireActivity().finish();
     }
 

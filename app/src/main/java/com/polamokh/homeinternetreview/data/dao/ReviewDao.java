@@ -10,7 +10,7 @@ public class ReviewDao implements IDao<Review> {
     private final String tableName = "reviews";
 
     private final DatabaseReference databaseReference =
-            FirebaseDatabase.getInstance().getReference();
+            FirebaseDatabase.getInstance().getReference(tableName);
 
     private static ReviewDao instance;
 
@@ -22,28 +22,28 @@ public class ReviewDao implements IDao<Review> {
 
     @Override
     public Task<Void> create(Review obj) {
-        return databaseReference.child(tableName).push().setValue(obj);
+        return databaseReference.push().setValue(obj);
     }
 
     @Override
     public Task<Void> edit(String id, Review obj) {
-        return databaseReference.child(tableName).child(id).setValue(obj);
+        return databaseReference.child(id).setValue(obj);
     }
 
 
     @Override
     public Task<Void> delete(String id) {
-        return databaseReference.child(tableName).child(id).removeValue();
+        return databaseReference.child(id).removeValue();
     }
 
     @Override
     public DatabaseReference getAll() {
-        return databaseReference.child(tableName);
+        return databaseReference;
     }
 
     @Override
     public DatabaseReference getById(String id) {
-        return databaseReference.child(tableName).child(id);
+        return databaseReference.child(id);
     }
 
 }

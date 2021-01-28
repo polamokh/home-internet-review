@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestManager;
 import com.polamokh.homeinternetreview.R;
 import com.polamokh.homeinternetreview.data.Review;
 import com.polamokh.homeinternetreview.utils.FirebaseStorageUtils;
@@ -22,7 +23,12 @@ import java.util.Date;
 import java.util.List;
 
 public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewViewHolder> {
+    private final RequestManager glide;
     private List<Review> reviews;
+
+    public ReviewsAdapter(RequestManager glide) {
+        this.glide = glide;
+    }
 
     @NonNull
     @Override
@@ -37,19 +43,12 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewVi
         Review review = reviews.get(position);
 
         FirebaseStorageUtils.getProfilePictureUri(review.getUserId())
-                .addOnFailureListener(e -> {
-                    Glide.with(holder.itemView)
-                            .load(Uri.parse(""))
-                            .placeholder(R.drawable.ic_profile_24dp)
-                            .circleCrop()
-                            .into(holder.profilePic);
-                })
-                .addOnSuccessListener(uri -> {
-                    Glide.with(holder.itemView)
-                            .load(uri)
-                            .placeholder(R.drawable.ic_profile_24dp)
-                            .circleCrop()
-                            .into(holder.profilePic);
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful())
+                        glide.load(task.getResult())
+                                .placeholder(R.drawable.ic_profile_24dp)
+                                .circleCrop()
+                                .into(holder.profilePic);
                 });
         holder.rating.setRating((float) review.getRating());
         holder.description.setText(review.getDescription());

@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.polamokh.homeinternetreview.R;
 import com.polamokh.homeinternetreview.ui.activities.CreateReviewActivity;
@@ -40,7 +41,7 @@ public class ReviewsFragment extends Fragment {
 
         reviewsRecyclerView = view.findViewById(R.id.reviews_recycler_view);
 
-        adapter = new ReviewsAdapter();
+        adapter = new ReviewsAdapter(Glide.with(this));
 
         reviewsViewModel.getAll().observe(getViewLifecycleOwner(), reviews -> {
             adapter.setReviews(reviews);
