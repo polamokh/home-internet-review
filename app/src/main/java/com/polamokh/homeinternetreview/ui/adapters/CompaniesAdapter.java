@@ -11,18 +11,24 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.polamokh.homeinternetreview.R;
 import com.polamokh.homeinternetreview.ui.listeners.IOnItemSelectListener;
+import com.polamokh.homeinternetreview.utils.CompanyUtils;
 
 public class CompaniesAdapter extends RecyclerView.Adapter<CompaniesAdapter.CompanyViewHolder> {
     private String[] names;
     private int[] images;
     private IOnItemSelectListener listener;
 
-    public CompaniesAdapter(String[] names, IOnItemSelectListener listener) {
-        this.names = names;
+    public CompaniesAdapter(IOnItemSelectListener listener) {
+        this.names = new String[]{CompanyUtils.WE,
+                CompanyUtils.ORANGE,
+                CompanyUtils.ETISALAT,
+                CompanyUtils.VODAFONE};
+
         this.images = new int[]{R.drawable.we,
                 R.drawable.orange,
                 R.drawable.etisalat,
                 R.drawable.vodafone};
+
         this.listener = listener;
     }
 

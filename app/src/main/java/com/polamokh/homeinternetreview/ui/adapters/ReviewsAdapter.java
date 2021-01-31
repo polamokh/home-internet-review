@@ -1,6 +1,6 @@
 package com.polamokh.homeinternetreview.ui.adapters;
 
-import android.net.Uri;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,11 +12,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
 import com.polamokh.homeinternetreview.R;
 import com.polamokh.homeinternetreview.data.Review;
-import com.polamokh.homeinternetreview.utils.FirebaseStorageUtils;
+import com.polamokh.homeinternetreview.data.User;
+import com.polamokh.homeinternetreview.data.dao.UserDao;
+import com.polamokh.homeinternetreview.utils.CompanyUtils;
 
 import java.text.DateFormat;
 import java.util.Date;
@@ -42,20 +43,64 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewVi
     public void onBindViewHolder(@NonNull ReviewViewHolder holder, int position) {
         Review review = reviews.get(position);
 
-        FirebaseStorageUtils.getProfilePictureUri(review.getUserId())
+        UserDao.getInstance().getById(review.getUserId()).get()
                 .addOnCompleteListener(task -> {
-                    if (task.isSuccessful())
-                        glide.load(task.getResult())
+                    if (task.isSuccessful()) {
+                        User user = task.getResult().getValue(User.class);
+                        glide.load(user.getProfilePictureUrl())
                                 .placeholder(R.drawable.ic_profile_24dp)
                                 .circleCrop()
                                 .into(holder.profilePic);
+
+                        holder.userName.setText(user.getName());
+                    }
                 });
+
+
         holder.rating.setRating((float) review.getRating());
-        holder.description.setText(review.getDescription());
+        setReviewDescription(holder, review);
+        holder.governorate.setText(review.getGovernorate());
+        setCompanyPicture(holder, review);
 
         Date time = new Date(review.getTime());
         String timeFormatter = DateFormat.getDateInstance().format(time);
         holder.time.setText(timeFormatter);
+
+        holder.description.setOnClickListener(v -> {
+            TextView desc = (TextView) v;
+            if (desc.getMaxLines() == Integer.MAX_VALUE) {
+                desc.setMaxLines(3);
+                desc.setEllipsize(TextUtils.TruncateAt.END);
+            } else {
+                desc.setMaxLines(Integer.MAX_VALUE);
+                desc.setEllipsize(null);
+            }
+        });
+    }
+
+    private void setReviewDescription(ReviewViewHolder holder, Review review) {
+        if (TextUtils.isEmpty(review.getDescription()))
+            holder.description.setVisibility(View.GONE);
+        else
+            holder.description.setText(review.getDescription());
+    }
+
+    private void setCompanyPicture(ReviewViewHolder holder, Review review) {
+        switch (review.getCompany()) {
+            case CompanyUtils.WE:
+                holder.companyPic.setImageResource(R.drawable.we);
+                return;
+            case CompanyUtils.ORANGE:
+                holder.companyPic.setImageResource(R.drawable.orange);
+                return;
+            case CompanyUtils.VODAFONE:
+                holder.companyPic.setImageResource(R.drawable.vodafone);
+                return;
+            case CompanyUtils.ETISALAT:
+                holder.companyPic.setImageResource(R.drawable.etisalat);
+                return;
+            default:
+        }
     }
 
     @Override
@@ -105,6 +150,9 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewVi
 
     static class ReviewViewHolder extends RecyclerView.ViewHolder {
         ImageView profilePic;
+        ImageView companyPic;
+        TextView governorate;
+        TextView userName;
         RatingBar rating;
         TextView description;
         TextView time;
@@ -112,7 +160,10 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewVi
         ReviewViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            profilePic = itemView.findViewById(R.id.review_item_profile_pic);
+            profilePic = itemView.findViewById(R.id.review_item_user_profile_pic);
+            companyPic = itemView.findViewById(R.id.review_item_company_pic);
+            userName = itemView.findViewById(R.id.review_item_user_name);
+            governorate = itemView.findViewById(R.id.review_item_governorate);
             rating = itemView.findViewById(R.id.review_item_rating);
             description = itemView.findViewById(R.id.review_item_description);
             time = itemView.findViewById(R.id.review_item_time);

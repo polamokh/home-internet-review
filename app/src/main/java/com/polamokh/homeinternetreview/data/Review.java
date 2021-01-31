@@ -1,6 +1,11 @@
 package com.polamokh.homeinternetreview.data;
 
+import com.google.firebase.database.Exclude;
+
 public class Review {
+    @Exclude
+    private String id;
+
     private String company;
     private double rating;
     private String governorate;
@@ -18,6 +23,16 @@ public class Review {
         this.description = description;
         this.time = time;
         this.userId = userId;
+    }
+
+    @Exclude
+    public String getId() {
+        return id;
+    }
+
+    @Exclude
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getCompany() {

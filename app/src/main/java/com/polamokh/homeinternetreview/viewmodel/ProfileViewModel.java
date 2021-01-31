@@ -16,27 +16,35 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.polamokh.homeinternetreview.data.Review;
+import com.polamokh.homeinternetreview.data.User;
 import com.polamokh.homeinternetreview.data.dao.CompanyDao;
 import com.polamokh.homeinternetreview.data.dao.ReviewDao;
+import com.polamokh.homeinternetreview.data.dao.UserDao;
 import com.polamokh.homeinternetreview.utils.FirebaseAuthUtils;
 import com.polamokh.homeinternetreview.utils.FirebaseStorageUtils;
 
 import java.io.InputStream;
+import java.util.LinkedList;
+import java.util.List;
 
 public class ProfileViewModel extends ViewModel {
     private static final String TAG = ProfileViewModel.class.getSimpleName();
 
     private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    private List<Review> reviews;
 
     private MutableLiveData<FirebaseUser> userLiveData;
+    private MutableLiveData<List<Review>> reviewsLiveData;
     private MutableLiveData<Boolean> isLoadingLiveData;
 
     public void setProfileName(String name) {
         isLoadingLiveData.setValue(true);
         FirebaseAuthUtils.updateProfileName(name)
                 .addOnCompleteListener(task -> {
-                    if (task.isSuccessful())
+                    if (task.isSuccessful()) {
+                        UserDao.getInstance().edit(user.getUid(), new User(user));
                         userLiveData.postValue(user);
+                    }
                     isLoadingLiveData.postValue(false);
                 });
     }
@@ -45,8 +53,10 @@ public class ProfileViewModel extends ViewModel {
         isLoadingLiveData.setValue(true);
         FirebaseAuthUtils.updateProfilePicture(uri)
                 .addOnCompleteListener(task -> {
-                    if (task.isSuccessful())
+                    if (task.isSuccessful()) {
+                        UserDao.getInstance().edit(user.getUid(), new User(user));
                         userLiveData.postValue(user);
+                    }
                     isLoadingLiveData.postValue(false);
                 });
     }
@@ -69,28 +79,23 @@ public class ProfileViewModel extends ViewModel {
     }
 
     public void deleteReviews() {
-        getProfileReviews()
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                            Review review = dataSnapshot.getValue(Review.class);
-                            ReviewDao.getInstance().delete(dataSnapshot.getKey());
-                            if (review != null) {
-                                CompanyDao.getInstance().updateCompaniesStandings(review,
-                                        CompanyDao.updateState.REMOVED);
-                            }
+        for (Review review : reviews) {
+            ReviewDao.getInstance().delete(review.getId())
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            CompanyDao.getInstance().updateCompaniesStandings(review,
+                                    CompanyDao.updateState.REMOVED);
                         }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                    }
-                });
+                    });
+        }
     }
 
     public Task<Void> deleteProfilePicture() {
         return FirebaseStorageUtils.deleteProfilePicture(getUser().getValue().getUid());
+    }
+
+    public Task<Void> deleteProfileInfo() {
+        return UserDao.getInstance().delete(user.getUid());
     }
 
     public Task<Void> deleteProfile() {
@@ -110,6 +115,30 @@ public class ProfileViewModel extends ViewModel {
 
     public LiveData<FirebaseUser> getUser() {
         return userLiveData;
+    }
+
+    public LiveData<List<Review>> getReviews() {
+        if (reviewsLiveData == null)
+            reviewsLiveData = new MutableLiveData<>();
+
+        getProfileReviews().addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                reviews = new LinkedList<>();
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    Review review = dataSnapshot.getValue(Review.class);
+                    review.setId(dataSnapshot.getKey());
+                    reviews.add(0, review);
+                }
+                reviewsLiveData.setValue(reviews);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+
+        return reviewsLiveData;
     }
 
     public LiveData<Boolean> isLoading() {

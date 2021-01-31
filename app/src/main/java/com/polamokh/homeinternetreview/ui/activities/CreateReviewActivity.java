@@ -1,11 +1,8 @@
 package com.polamokh.homeinternetreview.ui.activities;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,16 +12,13 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.CustomTarget;
-import com.bumptech.glide.request.transition.Transition;
 import com.firebase.ui.auth.IdpResponse;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.polamokh.homeinternetreview.R;
-import com.polamokh.homeinternetreview.utils.BitmapUtils;
+import com.polamokh.homeinternetreview.data.User;
+import com.polamokh.homeinternetreview.data.dao.UserDao;
 import com.polamokh.homeinternetreview.utils.FirebaseAuthUtils;
-import com.polamokh.homeinternetreview.utils.FirebaseStorageUtils;
 
 public class CreateReviewActivity extends AppCompatActivity {
 
@@ -93,33 +87,10 @@ public class CreateReviewActivity extends AppCompatActivity {
             if (requestCode == FirebaseAuthUtils.RC_SIGN_IN) {
                 IdpResponse response = IdpResponse.fromResultIntent(data);
                 FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (response.isNewUser() && user.getPhotoUrl() != null)
-                    handleNewUserWithProfilePicture(user);
+                if (response.isNewUser())
+                    UserDao.getInstance().create(new User(user));
             }
         } else
             finish();
-    }
-
-    private void handleNewUserWithProfilePicture(FirebaseUser user) {
-        Glide.with(this)
-                .asBitmap()
-                .load(user.getPhotoUrl())
-                .into(new CustomTarget<Bitmap>() {
-                    @Override
-                    public void onResourceReady(@NonNull Bitmap resource,
-                                                Transition<? super Bitmap> transition) {
-                        FirebaseStorageUtils.uploadProfilePictureAsStream(user.getUid(),
-                                BitmapUtils.convertBitmapToInputStream(resource))
-                                .addOnCompleteListener(task -> {
-                                    if (task.isSuccessful())
-                                        FirebaseAuthUtils
-                                                .updateProfilePicture(task.getResult());
-                                });
-                    }
-
-                    @Override
-                    public void onLoadCleared(@Nullable Drawable placeholder) {
-                    }
-                });
     }
 }

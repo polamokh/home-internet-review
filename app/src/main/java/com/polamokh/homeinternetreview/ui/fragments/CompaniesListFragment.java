@@ -23,8 +23,7 @@ public class CompaniesListFragment extends Fragment implements IOnItemSelectList
 
         RecyclerView recyclerView = view.findViewById(R.id.companies_list_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
-        recyclerView.setAdapter(new CompaniesAdapter(
-                requireContext().getResources().getStringArray(R.array.companies), this));
+        recyclerView.setAdapter(new CompaniesAdapter(this));
 
         return view;
     }

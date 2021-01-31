@@ -24,7 +24,6 @@ abstract class AbstractCreateReviewFragment extends Fragment {
 
     ReviewViewModel reviewViewModel;
 
-
     EditText descriptionText;
 
     abstract void initializeUi(View view);

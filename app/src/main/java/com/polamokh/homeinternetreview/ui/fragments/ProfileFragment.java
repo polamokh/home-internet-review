@@ -3,7 +3,6 @@ package com.polamokh.homeinternetreview.ui.fragments;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,20 +12,19 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStore;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.CustomTarget;
-import com.bumptech.glide.request.transition.Transition;
 import com.firebase.ui.auth.IdpResponse;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.firebase.auth.AuthCredential;
@@ -35,28 +33,31 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.polamokh.homeinternetreview.R;
+import com.polamokh.homeinternetreview.data.Review;
+import com.polamokh.homeinternetreview.data.User;
+import com.polamokh.homeinternetreview.data.dao.CompanyDao;
+import com.polamokh.homeinternetreview.data.dao.ReviewDao;
+import com.polamokh.homeinternetreview.data.dao.UserDao;
+import com.polamokh.homeinternetreview.ui.adapters.MyReviewsAdapter;
+import com.polamokh.homeinternetreview.ui.listeners.IOnItemSelectListener;
 import com.polamokh.homeinternetreview.utils.BitmapUtils;
 import com.polamokh.homeinternetreview.utils.FirebaseAuthUtils;
-import com.polamokh.homeinternetreview.utils.FirebaseStorageUtils;
 import com.polamokh.homeinternetreview.utils.GoogleSignInUtils;
+import com.polamokh.homeinternetreview.utils.ImagePickerUtils;
 import com.polamokh.homeinternetreview.viewmodel.ProfileViewModel;
 import com.theartofdev.edmodo.cropper.CropImage;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
-public class ProfileFragment extends Fragment {
+public class ProfileFragment extends Fragment implements IOnItemSelectListener {
     private static final String TAG = ProfileFragment.class.getSimpleName();
-
-    private static final int RC_PICK_IMAGE = 102;
-    private static final int RC_REAUTHORIZE = 103;
 
     private ProfileViewModel profileViewModel;
 
     private final FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
-    private LinearLayout profileLayout;
-    private ConstraintLayout loadingLayout;
+    private ProgressBar progressBar;
     private ImageView profilePic;
     private TextView name;
     private TextView email;
@@ -64,6 +65,8 @@ public class ProfileFragment extends Fragment {
     private Button signOut;
     private Button signIn;
     private ImageButton editProfilePic;
+    private RecyclerView myReviewsRecyclerView;
+    private MyReviewsAdapter adapter;
 
 
     @Override
@@ -95,14 +98,14 @@ public class ProfileFragment extends Fragment {
         profileViewModel = new ViewModelProvider(ViewModelStore::new)
                 .get(ProfileViewModel.class);
 
-        profileLayout = view.findViewById(R.id.profile_layout);
-        loadingLayout = view.findViewById(R.id.loading_layout);
+        progressBar = view.findViewById(R.id.progress);
         profilePic = view.findViewById(R.id.profile_pic);
         name = view.findViewById(R.id.profile_name_text);
         email = view.findViewById(R.id.profile_email_text);
         removeAccount = view.findViewById(R.id.profile_remove_account);
         editProfilePic = view.findViewById(R.id.profile_pic_edit);
         signOut = view.findViewById(R.id.profile_sign_out);
+        myReviewsRecyclerView = view.findViewById(R.id.my_reviews_recycler_view);
 
         profileViewModel.setUser(firebaseAuth.getCurrentUser());
         profileViewModel.isLoading().observe(getViewLifecycleOwner(), aBoolean -> {
@@ -128,7 +131,7 @@ public class ProfileFragment extends Fragment {
             email.setText(user.getEmail());
         });
 
-        editProfilePic.setOnClickListener(v -> startPickImageActivity());
+        editProfilePic.setOnClickListener(v -> ImagePickerUtils.startPickImageActivity(this));
         name.setOnClickListener(v -> showEditProfileNameDialog());
 
         signOut.setOnClickListener(v -> {
@@ -140,6 +143,16 @@ public class ProfileFragment extends Fragment {
             FirebaseUser user = profileViewModel.getUser().getValue();
             reauthorizeAndDeleteUser(user);
         });
+
+        initializeMyReviewsRecyclerView();
+        profileViewModel.getReviews().observe(getViewLifecycleOwner(), reviews ->
+                adapter.setReviews(reviews));
+    }
+
+    private void initializeMyReviewsRecyclerView() {
+        adapter = new MyReviewsAdapter(this);
+        myReviewsRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+        myReviewsRecyclerView.setAdapter(adapter);
     }
 
     private void reauthorizeAndDeleteUser(FirebaseUser user) {
@@ -157,16 +170,14 @@ public class ProfileFragment extends Fragment {
     }
 
     private void hideLoading() {
-        loadingLayout.setVisibility(View.GONE);
-        profileLayout.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.GONE);
     }
 
     private void showLoading() {
-        profileLayout.setVisibility(View.GONE);
-        loadingLayout.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.VISIBLE);
     }
 
-    public void reloadFragment() {
+    private void reloadFragment() {
         if (isVisible())
             getParentFragmentManager().beginTransaction()
                     .detach(this).attach(this).commit();
@@ -179,9 +190,10 @@ public class ProfileFragment extends Fragment {
                 case FirebaseAuthUtils.RC_SIGN_IN:
                     FirebaseUser user = firebaseAuth.getCurrentUser();
                     IdpResponse response = IdpResponse.fromResultIntent(data);
-                    Log.d(TAG, "onActivityResult: " + user.getPhotoUrl());
-                    if (response.isNewUser() && user.getPhotoUrl() != null)
-                        handleNewUserWithProfilePicture(user);
+
+                    if (response.isNewUser())
+                        UserDao.getInstance().create(new User(user));
+
                     reloadFragment();
                     return;
 
@@ -196,8 +208,8 @@ public class ProfileFragment extends Fragment {
                             });
                     return;
 
-                case RC_PICK_IMAGE:
-                    startCropImageActivity(data.getData());
+                case ImagePickerUtils.RC_PICK_IMAGE:
+                    ImagePickerUtils.startCropImageActivity(data.getData(), this);
                     return;
 
                 case CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE:
@@ -207,29 +219,6 @@ public class ProfileFragment extends Fragment {
                 default:
             }
         }
-    }
-
-    private void handleNewUserWithProfilePicture(FirebaseUser user) {
-        Glide.with(this)
-                .asBitmap()
-                .load(user.getPhotoUrl())
-                .into(new CustomTarget<Bitmap>() {
-                    @Override
-                    public void onResourceReady(@NonNull Bitmap resource,
-                                                Transition<? super Bitmap> transition) {
-                        FirebaseStorageUtils.uploadProfilePictureAsStream(user.getUid(),
-                                BitmapUtils.convertBitmapToInputStream(resource))
-                                .addOnCompleteListener(task -> {
-                                    if (task.isSuccessful())
-                                        FirebaseAuthUtils
-                                                .updateProfilePicture(task.getResult());
-                                });
-                    }
-
-                    @Override
-                    public void onLoadCleared(@Nullable Drawable placeholder) {
-                    }
-                });
     }
 
     private void handleCropImageResult(Uri imageUri) {
@@ -247,21 +236,6 @@ public class ProfileFragment extends Fragment {
         }
     }
 
-
-    private void startPickImageActivity() {
-        Intent intent = new Intent(Intent.ACTION_PICK);
-        intent.setType("image/*");
-        if (intent.resolveActivity(requireContext().getPackageManager()) != null)
-            startActivityForResult(intent, RC_PICK_IMAGE);
-    }
-
-    private void startCropImageActivity(Uri data) {
-        CropImage.activity(data)
-                .setAspectRatio(1, 1)
-                .setFixAspectRatio(true)
-                .start(requireContext(), this);
-    }
-
     private void showEditProfileNameDialog() {
         EditProfileNameDialogFragment dialogFragment =
                 new EditProfileNameDialogFragment(profileViewModel.getUser().getValue().getDisplayName(),
@@ -274,6 +248,7 @@ public class ProfileFragment extends Fragment {
                 new DeleteProfileDialogFragment(extra -> {
                     profileViewModel.deleteProfilePicture();
                     profileViewModel.deleteReviews();
+                    profileViewModel.deleteProfileInfo();
                     profileViewModel.deleteProfile()
                             .addOnCompleteListener(task -> {
                                 if (task.isSuccessful())
@@ -315,5 +290,17 @@ public class ProfileFragment extends Fragment {
 
     private AuthCredential getGoogleCredential(String idToken) {
         return GoogleAuthProvider.getCredential(idToken, null);
+    }
+
+    @Override
+    public void OnItemSelected(Object object) {
+        Review review = (Review) object;
+        ReviewDao.getInstance().delete(review.getId())
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        CompanyDao.getInstance().updateCompaniesStandings(review,
+                                CompanyDao.updateState.REMOVED);
+                    }
+                });
     }
 }

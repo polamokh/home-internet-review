@@ -1,17 +1,24 @@
 package com.polamokh.homeinternetreview.data.dao;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.MutableData;
+import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 import com.polamokh.homeinternetreview.data.Company;
 import com.polamokh.homeinternetreview.data.Review;
 
 public class CompanyDao implements IDao<Company> {
+
+    private static final String TAG = CompanyDao.class.getSimpleName();
 
     public enum updateState {
         INSERTED, REMOVED
@@ -57,24 +64,29 @@ public class CompanyDao implements IDao<Company> {
 
     public void updateCompaniesStandings(Review review, updateState updateState) {
         getById(review.getCompany())
-                .addListenerForSingleValueEvent(new ValueEventListener() {
+                .runTransaction(new Transaction.Handler() {
+                    @NonNull
                     @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        Company company = snapshot.getValue(Company.class);
+                    public Transaction.Result doTransaction(@NonNull MutableData currentData) {
+                        Company company = currentData.getValue(Company.class);
                         switch (updateState) {
                             case INSERTED:
                                 updateCompaniesStandingsInsertedReview(company, review);
-                                return;
+                                break;
                             case REMOVED:
                                 updateCompaniesStandingsRemovedReview(company, review);
-                                return;
+                                break;
 
                             default:
                         }
+                        currentData.setValue(company);
+                        return Transaction.success(currentData);
                     }
 
                     @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
+                    public void onComplete(@Nullable DatabaseError error, boolean committed,
+                                           @Nullable DataSnapshot currentData) {
+                        Log.d(TAG, "onComplete: " + error);
                     }
                 });
     }
@@ -85,8 +97,9 @@ public class CompanyDao implements IDao<Company> {
             double newRating = (company.getRating() * company.getNumOfRatings()
                     + review.getRating()) / newNumOfRatings;
 
-            edit(company.getName(),
-                    new Company(company.getName(), newRating, newNumOfRatings));
+            company.setNumOfRatings(newNumOfRatings);
+            company.setRating(newRating);
+            edit(company.getName(), company);
         } else
             create(new Company(review.getCompany(),
                     review.getRating(), 1));
@@ -103,8 +116,9 @@ public class CompanyDao implements IDao<Company> {
             double newRating = (company.getRating() * company.getNumOfRatings()
                     - review.getRating()) / newNumOfRatings;
 
-            edit(company.getName(),
-                    new Company(company.getName(), newRating, newNumOfRatings));
+            company.setNumOfRatings(newNumOfRatings);
+            company.setRating(newRating);
+            edit(company.getName(), company);
         }
     }
 }
