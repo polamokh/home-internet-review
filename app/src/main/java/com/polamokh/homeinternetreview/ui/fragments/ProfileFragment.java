@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStore;
@@ -57,6 +58,7 @@ public class ProfileFragment extends Fragment implements IOnItemSelectListener {
 
     private final FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
+    private NestedScrollView scrollView;
     private ProgressBar progressBar;
     private ImageView profilePic;
     private TextView name;
@@ -98,6 +100,7 @@ public class ProfileFragment extends Fragment implements IOnItemSelectListener {
         profileViewModel = new ViewModelProvider(ViewModelStore::new)
                 .get(ProfileViewModel.class);
 
+        scrollView = view.findViewById(R.id.profile_scroll);
         progressBar = view.findViewById(R.id.progress);
         profilePic = view.findViewById(R.id.profile_pic);
         name = view.findViewById(R.id.profile_name_text);
@@ -175,6 +178,7 @@ public class ProfileFragment extends Fragment implements IOnItemSelectListener {
 
     private void showLoading() {
         progressBar.setVisibility(View.VISIBLE);
+        scrollView.scrollTo(0, 0);
     }
 
     private void reloadFragment() {

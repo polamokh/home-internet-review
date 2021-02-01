@@ -5,12 +5,13 @@
     android:orientation="vertical">
 
     <TextView
-        style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+        style="@style/TextAppearance.MaterialComponents.Headline6"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/component_margin_top"
-        android:layout_marginBottom="@dimen/component_margin_bottom"
-        android:text="@string/fragment_standings_title" />
+        android:layout_marginTop="@dimen/margin_top"
+        android:layout_marginBottom="@dimen/margin_bottom"
+        android:text="@string/fragment_standings_title"
+        android:textSize="20sp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/standings_recycler_view"

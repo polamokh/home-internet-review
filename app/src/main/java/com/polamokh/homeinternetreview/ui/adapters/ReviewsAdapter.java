@@ -56,11 +56,10 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewVi
                     }
                 });
 
-
         holder.rating.setRating((float) review.getRating());
         setReviewDescription(holder, review);
         holder.governorate.setText(review.getGovernorate());
-        setCompanyPicture(holder, review);
+        CompanyUtils.setCompanyPicture(review.getCompany(), holder.companyPic);
 
         Date time = new Date(review.getTime());
         String timeFormatter = DateFormat.getDateInstance().format(time);
@@ -81,25 +80,9 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewVi
     private void setReviewDescription(ReviewViewHolder holder, Review review) {
         if (TextUtils.isEmpty(review.getDescription()))
             holder.description.setVisibility(View.GONE);
-        else
+        else {
+            holder.description.setVisibility(View.VISIBLE);
             holder.description.setText(review.getDescription());
-    }
-
-    private void setCompanyPicture(ReviewViewHolder holder, Review review) {
-        switch (review.getCompany()) {
-            case CompanyUtils.WE:
-                holder.companyPic.setImageResource(R.drawable.we);
-                return;
-            case CompanyUtils.ORANGE:
-                holder.companyPic.setImageResource(R.drawable.orange);
-                return;
-            case CompanyUtils.VODAFONE:
-                holder.companyPic.setImageResource(R.drawable.vodafone);
-                return;
-            case CompanyUtils.ETISALAT:
-                holder.companyPic.setImageResource(R.drawable.etisalat);
-                return;
-            default:
         }
     }
 
