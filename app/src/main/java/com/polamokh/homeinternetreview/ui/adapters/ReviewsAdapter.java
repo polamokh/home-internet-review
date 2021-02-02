@@ -17,6 +17,7 @@ import com.polamokh.homeinternetreview.R;
 import com.polamokh.homeinternetreview.data.Review;
 import com.polamokh.homeinternetreview.data.User;
 import com.polamokh.homeinternetreview.data.dao.UserDao;
+import com.polamokh.homeinternetreview.ui.listeners.IOnItemSelectListener;
 import com.polamokh.homeinternetreview.utils.CompanyUtils;
 
 import java.text.DateFormat;
@@ -25,10 +26,16 @@ import java.util.List;
 
 public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewViewHolder> {
     private final RequestManager glide;
+    private IOnItemSelectListener listener;
     private List<Review> reviews;
 
     public ReviewsAdapter(RequestManager glide) {
         this.glide = glide;
+    }
+
+    public ReviewsAdapter(RequestManager glide, IOnItemSelectListener listener) {
+        this.glide = glide;
+        this.listener = listener;
     }
 
     @NonNull
@@ -47,12 +54,14 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewVi
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         User user = task.getResult().getValue(User.class);
-                        glide.load(user.getProfilePictureUrl())
-                                .placeholder(R.drawable.ic_profile_24dp)
-                                .circleCrop()
-                                .into(holder.profilePic);
+                        if (user != null) {
+                            glide.load(user.getProfilePictureUrl())
+                                    .placeholder(R.drawable.ic_profile_24dp)
+                                    .circleCrop()
+                                    .into(holder.profilePic);
 
-                        holder.userName.setText(user.getName());
+                            holder.userName.setText(user.getName());
+                        }
                     }
                 });
 
@@ -74,6 +83,14 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewVi
                 desc.setMaxLines(Integer.MAX_VALUE);
                 desc.setEllipsize(null);
             }
+        });
+
+        holder.itemView.setOnLongClickListener(v -> {
+            if (listener != null) {
+                listener.OnItemSelected(review);
+                return true;
+            }
+            return false;
         });
     }
 

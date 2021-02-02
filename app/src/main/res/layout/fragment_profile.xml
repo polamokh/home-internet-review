@@ -68,7 +68,7 @@
                 android:layout_marginBottom="@dimen/component_margin_bottom"
                 android:background="@drawable/circle_background"
                 android:contentDescription="@string/edit_profile_picture"
-                android:src="@drawable/ic_edit_24dp"
+                android:src="@drawable/ic_edit_white_24dp"
                 app:layout_anchor="@id/profile_pic"
                 app:layout_anchorGravity="end|bottom" />
 
@@ -105,10 +105,21 @@
 
         <Button
             android:id="@+id/profile_remove_account"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/component_margin_top"
-            android:text="@string/profile_delete_account_button" />
+            android:layout_marginBottom="@dimen/component_margin_bottom"
+            android:text="@string/profile_delete_account_button"
+            android:textColor="@android:color/holo_red_dark" />
+
+        <TextView
+            style="@style/TextAppearance.MaterialComponents.Headline6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/component_margin_top"
+            android:layout_marginBottom="@dimen/component_margin_bottom"
+            android:text="@string/profile_my_reviews" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/my_reviews_recycler_view"

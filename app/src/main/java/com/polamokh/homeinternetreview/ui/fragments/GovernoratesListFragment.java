@@ -15,6 +15,10 @@ import com.polamokh.homeinternetreview.R;
 import com.polamokh.homeinternetreview.ui.adapters.GovernoratesAdapter;
 import com.polamokh.homeinternetreview.ui.listeners.IOnItemSelectListener;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+
 public class GovernoratesListFragment extends Fragment implements IOnItemSelectListener {
 
 
@@ -24,10 +28,12 @@ public class GovernoratesListFragment extends Fragment implements IOnItemSelectL
 
         RecyclerView recyclerView = view.findViewById(R.id.governorates_list_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+
+        String[] governorates = requireContext().getResources().getStringArray(R.array.governorates);
+        Arrays.sort(governorates);
+
         recyclerView.setAdapter(new GovernoratesAdapter(
-                requireContext().getResources().getStringArray(R.array.governorates),
-                this
-        ));
+                governorates, this));
 
         return view;
     }

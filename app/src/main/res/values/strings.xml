@@ -21,12 +21,17 @@
     <string name="profile_email">Email Address</string>
     <string name="profile_delete_account_button">Delete Account</string>
     <string name="profile_sign_in_button">Sign in</string>
+    <string name="profile_sign_in_message">Sign in to explain your experience and post reviews
+        \n or Create your new account now.</string>
     <string name="profile_sign_out_button">Sign out</string>
+    <string name="profile_my_reviews">My Reviews</string>
+    <string name="profile_delete_review_message">Your review has been deleted</string>
+    <string name="profile_delete_review_action">Undo</string>
 
     <string name="fragment_create_review_title">Create review</string>
     <string name="fragment_review_details_option_title">Select your review details</string>
     <string name="review_details_option_quick_button">Quick</string>
-    <string name="review_details_option_detailed_button">Detailed (Recommended)</string>
+    <string name="review_details_option_detailed_button">Detailed</string>
 
     <string name="fragment_home_title">Reviews</string>
     <string name="fragment_profile_title">Profile</string>
@@ -50,10 +55,11 @@
     <string name="dialog_verify_profile_verify_btn">Verify</string>
     <string name="dialog_verify_profile_cancel_btn">Cancel</string>
 
-    <string name="server_client_id">123625297518-pv5rjmqsj2qbtej843jfrvd5fl9lmike.apps.googleusercontent.com</string>
-
     <string name="loading_text">Loading…</string>
     <string name="company_picture">Company Picture</string>
+
+    <string name="server_client_id">123625297518-pv5rjmqsj2qbtej843jfrvd5fl9lmike.apps.googleusercontent.com</string>
+    <string name="anonymous">Anonymous</string>
 
     <string-array name="governorates">
         <item>Cairo</item>

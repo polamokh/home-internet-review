@@ -28,6 +28,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.firebase.ui.auth.IdpResponse;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
@@ -39,7 +40,7 @@ import com.polamokh.homeinternetreview.data.User;
 import com.polamokh.homeinternetreview.data.dao.CompanyDao;
 import com.polamokh.homeinternetreview.data.dao.ReviewDao;
 import com.polamokh.homeinternetreview.data.dao.UserDao;
-import com.polamokh.homeinternetreview.ui.adapters.MyReviewsAdapter;
+import com.polamokh.homeinternetreview.ui.adapters.ReviewsAdapter;
 import com.polamokh.homeinternetreview.ui.listeners.IOnItemSelectListener;
 import com.polamokh.homeinternetreview.utils.BitmapUtils;
 import com.polamokh.homeinternetreview.utils.FirebaseAuthUtils;
@@ -68,7 +69,7 @@ public class ProfileFragment extends Fragment implements IOnItemSelectListener {
     private Button signIn;
     private ImageButton editProfilePic;
     private RecyclerView myReviewsRecyclerView;
-    private MyReviewsAdapter adapter;
+    private ReviewsAdapter adapter;
 
 
     @Override
@@ -111,6 +112,7 @@ public class ProfileFragment extends Fragment implements IOnItemSelectListener {
         myReviewsRecyclerView = view.findViewById(R.id.my_reviews_recycler_view);
 
         profileViewModel.setUser(firebaseAuth.getCurrentUser());
+
         profileViewModel.isLoading().observe(getViewLifecycleOwner(), aBoolean -> {
             if (aBoolean)
                 showLoading();
@@ -132,6 +134,7 @@ public class ProfileFragment extends Fragment implements IOnItemSelectListener {
 
             name.setText(user.getDisplayName());
             email.setText(user.getEmail());
+            profileViewModel.getReviews();
         });
 
         editProfilePic.setOnClickListener(v -> ImagePickerUtils.startPickImageActivity(this));
@@ -153,7 +156,7 @@ public class ProfileFragment extends Fragment implements IOnItemSelectListener {
     }
 
     private void initializeMyReviewsRecyclerView() {
-        adapter = new MyReviewsAdapter(this);
+        adapter = new ReviewsAdapter(Glide.with(this), this);
         myReviewsRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         myReviewsRecyclerView.setAdapter(adapter);
     }
@@ -302,8 +305,24 @@ public class ProfileFragment extends Fragment implements IOnItemSelectListener {
         ReviewDao.getInstance().delete(review.getId())
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        CompanyDao.getInstance().updateCompaniesStandings(review,
-                                CompanyDao.updateState.REMOVED);
+                        CompanyDao.getInstance()
+                                .updateCompaniesStandings(review, CompanyDao.updateState.REMOVED);
+                        Snackbar.make(requireView(),
+                                R.string.profile_delete_review_message,
+                                Snackbar.LENGTH_LONG)
+                                .setAnchorView(requireActivity().findViewById(R.id.bottom_navigation_view))
+                                .setAction(R.string.profile_delete_review_action, v -> {
+                                    ReviewDao.getInstance().getAll()
+                                            .child(review.getId())
+                                            .setValue(review)
+                                            .addOnCompleteListener(restoreTask -> {
+                                                if (restoreTask.isSuccessful())
+                                                    CompanyDao.getInstance()
+                                                            .updateCompaniesStandings(review,
+                                                                    CompanyDao.updateState.INSERTED);
+                                            });
+                                })
+                                .show();
                     }
                 });
     }
