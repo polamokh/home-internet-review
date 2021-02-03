@@ -12,8 +12,15 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_top"
         android:layout_marginBottom="@dimen/margin_bottom"
-        android:text="@string/fragment_home_title"
+        android:text="@string/fragment_reviews_title"
         android:textSize="20sp" />
+
+    <ProgressBar
+        android:id="@+id/progress"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:indeterminate="true" />
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
@@ -23,6 +30,8 @@
             android:id="@+id/reviews_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
+
+        <include layout="@layout/layout_no_data" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/add_review_fab"

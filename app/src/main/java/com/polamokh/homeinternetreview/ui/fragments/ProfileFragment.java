@@ -28,6 +28,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.firebase.ui.auth.IdpResponse;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
@@ -111,8 +113,6 @@ public class ProfileFragment extends Fragment implements IOnItemSelectListener {
         signOut = view.findViewById(R.id.profile_sign_out);
         myReviewsRecyclerView = view.findViewById(R.id.my_reviews_recycler_view);
 
-        profileViewModel.setUser(firebaseAuth.getCurrentUser());
-
         profileViewModel.isLoading().observe(getViewLifecycleOwner(), aBoolean -> {
             if (aBoolean)
                 showLoading();
@@ -134,7 +134,6 @@ public class ProfileFragment extends Fragment implements IOnItemSelectListener {
 
             name.setText(user.getDisplayName());
             email.setText(user.getEmail());
-            profileViewModel.getReviews();
         });
 
         editProfilePic.setOnClickListener(v -> ImagePickerUtils.startPickImageActivity(this));
@@ -253,15 +252,23 @@ public class ProfileFragment extends Fragment implements IOnItemSelectListener {
     private void showDeleteProfileDialog() {
         DeleteProfileDialogFragment dialogFragment =
                 new DeleteProfileDialogFragment(extra -> {
-                    profileViewModel.deleteProfilePicture();
-                    profileViewModel.deleteReviews();
-                    profileViewModel.deleteProfileInfo();
-                    profileViewModel.deleteProfile()
+                    Task[] tasks = new Task[]{
+                            profileViewModel.deleteReviews(),
+                            profileViewModel.deleteProfilePicture(),
+                            profileViewModel.deleteProfileInfo()
+                    };
+
+                    Tasks.whenAllComplete(tasks)
                             .addOnCompleteListener(task -> {
-                                if (task.isSuccessful())
-                                    reloadFragment();
-                                else
-                                    Log.d(TAG, "onActivityResult: DELETE PROFILE FAILED");
+                                if (task.isSuccessful()) {
+                                    profileViewModel.deleteProfile()
+                                            .addOnCompleteListener(deleteTask -> {
+                                                if (deleteTask.isSuccessful())
+                                                    reloadFragment();
+                                                else
+                                                    Log.d(TAG, "onActivityResult: DELETE PROFILE FAILED");
+                                            });
+                                }
                             });
                 });
         dialogFragment.show(getParentFragmentManager(), null);

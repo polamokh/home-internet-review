@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,7 +22,9 @@ public class StandingsFragment extends Fragment {
 
     private StandingsViewModel standingsViewModel;
 
+    private LinearLayout noDataLayout;
     private RecyclerView standingsRecyclerView;
+    private ProgressBar progressBar;
     private CompaniesStandingsAdapter adapter;
 
     @Override
@@ -38,6 +42,8 @@ public class StandingsFragment extends Fragment {
         standingsViewModel = new ViewModelProvider(this)
                 .get(StandingsViewModel.class);
 
+        noDataLayout = view.findViewById(R.id.no_data_layout);
+        progressBar = view.findViewById(R.id.progress);
         standingsRecyclerView = view.findViewById(R.id.standings_recycler_view);
 
         adapter = new CompaniesStandingsAdapter();
@@ -46,7 +52,39 @@ public class StandingsFragment extends Fragment {
             adapter.setCompanies(companies);
         });
 
+        standingsViewModel.isLoading().observe(getViewLifecycleOwner(), aBoolean -> {
+            if (aBoolean)
+                showLoading();
+            else
+                hideLoading();
+        });
+
+        standingsViewModel.hasAvailableCompanies().observe(getViewLifecycleOwner(), aBoolean -> {
+            if (aBoolean)
+                showCompanies();
+            else
+                hideCompanies();
+        });
+
         standingsRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         standingsRecyclerView.setAdapter(adapter);
+    }
+
+    private void hideCompanies() {
+        standingsRecyclerView.setVisibility(View.GONE);
+        noDataLayout.setVisibility(View.VISIBLE);
+    }
+
+    private void showCompanies() {
+        noDataLayout.setVisibility(View.GONE);
+        standingsRecyclerView.setVisibility(View.VISIBLE);
+    }
+
+    private void hideLoading() {
+        progressBar.setVisibility(View.GONE);
+    }
+
+    private void showLoading() {
+        progressBar.setVisibility(View.VISIBLE);
     }
 }

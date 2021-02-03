@@ -22,7 +22,7 @@
     <string name="profile_delete_account_button">Delete Account</string>
     <string name="profile_sign_in_button">Sign in</string>
     <string name="profile_sign_in_message">Sign in to explain your experience and post reviews
-        \n or Create your new account now.</string>
+        \n or Create your new account.</string>
     <string name="profile_sign_out_button">Sign out</string>
     <string name="profile_my_reviews">My Reviews</string>
     <string name="profile_delete_review_message">Your review has been deleted</string>
@@ -33,7 +33,7 @@
     <string name="review_details_option_quick_button">Quick</string>
     <string name="review_details_option_detailed_button">Detailed</string>
 
-    <string name="fragment_home_title">Reviews</string>
+    <string name="fragment_reviews_title">Reviews</string>
     <string name="fragment_profile_title">Profile</string>
     <string name="fragment_standings_title">Standings</string>
 
@@ -60,6 +60,8 @@
 
     <string name="server_client_id">123625297518-pv5rjmqsj2qbtej843jfrvd5fl9lmike.apps.googleusercontent.com</string>
     <string name="anonymous">Anonymous</string>
+    <string name="information">Information</string>
+    <string name="no_available_data">No available data.</string>
 
     <string-array name="governorates">
         <item>Cairo</item>

@@ -20,6 +20,10 @@ public class UserDao implements IDao<User> {
         return instance;
     }
 
+    public String getTableName() {
+        return tableName;
+    }
+
     @Override
     public Task<Void> create(User obj) {
         return databaseReference.child(obj.getId()).setValue(obj);

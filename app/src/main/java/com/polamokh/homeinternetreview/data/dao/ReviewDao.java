@@ -20,6 +20,10 @@ public class ReviewDao implements IDao<Review> {
         return instance;
     }
 
+    public String getTableName() {
+        return tableName;
+    }
+
     @Override
     public Task<Void> create(Review obj) {
         return databaseReference.push().setValue(obj);

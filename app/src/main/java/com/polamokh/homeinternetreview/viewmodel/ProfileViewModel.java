@@ -24,8 +24,10 @@ import com.polamokh.homeinternetreview.utils.FirebaseAuthUtils;
 import com.polamokh.homeinternetreview.utils.FirebaseStorageUtils;
 
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 public class ProfileViewModel extends ViewModel {
     private static final String TAG = ProfileViewModel.class.getSimpleName();
@@ -78,16 +80,14 @@ public class ProfileViewModel extends ViewModel {
                 .equalTo(getUser().getValue().getUid());
     }
 
-    public void deleteReviews() {
+    public Task<Void> deleteReviews() {
+        Map<String, Object> update = new HashMap<>();
         for (Review review : reviews) {
-            ReviewDao.getInstance().delete(review.getId())
-                    .addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            CompanyDao.getInstance().updateCompaniesStandings(review,
-                                    CompanyDao.updateState.REMOVED);
-                        }
-                    });
+            update.put(review.getId(), null);
+            CompanyDao.getInstance().updateCompaniesStandings(review, CompanyDao.updateState.REMOVED);
         }
+
+        return ReviewDao.getInstance().getAll().updateChildren(update);
     }
 
     public Task<Void> deleteProfilePicture() {
@@ -106,46 +106,48 @@ public class ProfileViewModel extends ViewModel {
         return getUser().getValue().reauthenticate(credential);
     }
 
-    public void setUser(FirebaseUser user) {
-        if (userLiveData == null)
-            userLiveData = new MutableLiveData<>();
-
-        userLiveData.setValue(user);
-    }
-
     public LiveData<FirebaseUser> getUser() {
+        if (userLiveData == null) {
+            userLiveData = new MutableLiveData<>();
+            userLiveData.setValue(user);
+        }
+
         return userLiveData;
     }
 
     public LiveData<List<Review>> getReviews() {
-        if (reviewsLiveData == null)
+        if (reviewsLiveData == null) {
             reviewsLiveData = new MutableLiveData<>();
 
-        getProfileReviews().addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                reviews = new LinkedList<>();
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    Review review = dataSnapshot.getValue(Review.class);
-                    review.setId(dataSnapshot.getKey());
-                    reviews.add(0, review);
-                }
-                reviewsLiveData.setValue(reviews);
-            }
+            getProfileReviews().addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    reviews = new LinkedList<>();
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                        Review review = dataSnapshot.getValue(Review.class);
+                        review.setId(dataSnapshot.getKey());
+                        reviews.add(0, review);
+                    }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-            }
-        });
+                    reviewsLiveData.postValue(reviews);
+                    isLoadingLiveData.postValue(false);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    isLoadingLiveData.postValue(false);
+                }
+            });
+        }
 
         return reviewsLiveData;
     }
 
     public LiveData<Boolean> isLoading() {
-        if (isLoadingLiveData == null)
+        if (isLoadingLiveData == null) {
             isLoadingLiveData = new MutableLiveData<>();
-
-        isLoadingLiveData.setValue(false);
+            isLoadingLiveData.setValue(true);
+        }
 
         return isLoadingLiveData;
     }

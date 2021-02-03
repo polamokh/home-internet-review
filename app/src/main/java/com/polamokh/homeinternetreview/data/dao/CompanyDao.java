@@ -37,6 +37,10 @@ public class CompanyDao implements IDao<Company> {
         return instance;
     }
 
+    public String getTableName() {
+        return tableName;
+    }
+
     @Override
     public Task<Void> create(Company obj) {
         return databaseReference.child(obj.getName()).setValue(obj);
