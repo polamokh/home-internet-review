@@ -3,10 +3,10 @@ An Android app that share people reviews in internet providers at home and find 
 
 It's created using:
 - [Firebase](https://firebase.google.com/)
-- [Firebase-UI Library] (https://github.com/firebase/FirebaseUI-Android) 
+- [Firebase UI Library](https://github.com/firebase/FirebaseUI-Android) 
 - [Material IO](https://material.io/)
-- [Glide Library] (https://github.com/bumptech/glide)
-- [Android-Image-Cropper Library] (https://github.com/ArthurHub/Android-Image-Cropper)
+- [Glide Library](https://github.com/bumptech/glide)
+- [Android Image Cropper Library](https://github.com/ArthurHub/Android-Image-Cropper)
 - **MVVM** design pattern.
 
 
