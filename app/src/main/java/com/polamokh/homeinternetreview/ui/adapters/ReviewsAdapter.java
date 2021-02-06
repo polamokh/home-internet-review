@@ -4,6 +4,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -85,13 +86,10 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewVi
             }
         });
 
-        holder.itemView.setOnLongClickListener(v -> {
-            if (listener != null) {
-                listener.OnItemSelected(review);
-                return true;
-            }
-            return false;
-        });
+        if (listener != null) {
+            holder.delete.setVisibility(View.VISIBLE);
+            holder.delete.setOnClickListener(v -> listener.OnItemSelected(review));
+        }
     }
 
     private void setReviewDescription(ReviewViewHolder holder, Review review) {
@@ -156,6 +154,7 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewVi
         RatingBar rating;
         TextView description;
         TextView time;
+        ImageButton delete;
 
         ReviewViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -167,6 +166,7 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewVi
             rating = itemView.findViewById(R.id.review_item_rating);
             description = itemView.findViewById(R.id.review_item_description);
             time = itemView.findViewById(R.id.review_item_time);
+            delete = itemView.findViewById(R.id.review_item_delete);
         }
     }
 }

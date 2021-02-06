@@ -20,6 +20,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStore;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -121,11 +122,6 @@ public class ProfileFragment extends Fragment implements IOnItemSelectListener {
         });
 
         profileViewModel.getUser().observe(getViewLifecycleOwner(), user -> {
-            Toast.makeText(requireContext(),
-                    user.getUid(),
-                    Toast.LENGTH_SHORT)
-                    .show();
-
             Glide.with(this)
                     .load(user.getPhotoUrl())
                     .placeholder(R.drawable.ic_profile_24dp)
@@ -290,11 +286,13 @@ public class ProfileFragment extends Fragment implements IOnItemSelectListener {
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful())
                         showDeleteProfileDialog();
-                    else
-                        Toast.makeText(requireContext(),
+                    else {
+                        Snackbar.make(requireView(),
                                 task.getException().getMessage(),
-                                Toast.LENGTH_SHORT)
+                                Snackbar.LENGTH_LONG)
+                                .setAnchorView(requireActivity().findViewById(R.id.bottom_navigation_view))
                                 .show();
+                    }
                 });
     }
 
@@ -309,15 +307,16 @@ public class ProfileFragment extends Fragment implements IOnItemSelectListener {
     @Override
     public void OnItemSelected(Object object) {
         Review review = (Review) object;
+        FragmentActivity activity = requireActivity();
         ReviewDao.getInstance().delete(review.getId())
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         CompanyDao.getInstance()
                                 .updateCompaniesStandings(review, CompanyDao.updateState.REMOVED);
-                        Snackbar.make(requireView(),
+                        Snackbar.make(activity.findViewById(android.R.id.content),
                                 R.string.profile_delete_review_message,
                                 Snackbar.LENGTH_LONG)
-                                .setAnchorView(requireActivity().findViewById(R.id.bottom_navigation_view))
+                                .setAnchorView(activity.findViewById(R.id.bottom_navigation_view))
                                 .setAction(R.string.profile_delete_review_action, v -> {
                                     ReviewDao.getInstance().getAll()
                                             .child(review.getId())

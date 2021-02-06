@@ -111,7 +111,7 @@
             android:layout_marginTop="@dimen/component_margin_top"
             android:layout_marginBottom="@dimen/component_margin_bottom"
             android:text="@string/profile_delete_account_button"
-            android:textColor="@android:color/holo_red_dark" />
+            android:textColor="@color/colorRedDark" />
 
         <TextView
             style="@style/TextAppearance.MaterialComponents.Headline6"

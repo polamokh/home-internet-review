@@ -15,6 +15,7 @@ import com.polamokh.homeinternetreview.data.Company;
 import com.polamokh.homeinternetreview.utils.CompanyUtils;
 
 import java.util.List;
+import java.util.Locale;
 
 public class CompaniesStandingsAdapter extends
         RecyclerView.Adapter<CompaniesStandingsAdapter.CompaniesStandingsViewHolder> {
@@ -33,12 +34,12 @@ public class CompaniesStandingsAdapter extends
     public void onBindViewHolder(@NonNull CompaniesStandingsViewHolder holder, int position) {
         Company company = companies.get(position);
 
-        holder.rank.setText(String.valueOf(position + 1));
+        holder.rank.setText(String.format(Locale.getDefault(), "%d", position + 1));
         CompanyUtils.setCompanyPicture(company.getName(), holder.picture);
         holder.name.setText(company.getName());
-        holder.ratingNum.setText(String.format("%.1f", company.getRating()));
+        holder.ratingNum.setText(String.format(Locale.getDefault(), "%.1f", company.getRating()));
         holder.rating.setRating((float) company.getRating());
-        holder.numOfRatings.setText(String.valueOf(company.getNumOfRatings()));
+        holder.numOfRatings.setText(String.format(Locale.getDefault(), "%d", company.getNumOfRatings()));
     }
 
     @Override

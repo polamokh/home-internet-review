@@ -73,6 +73,10 @@ public class CompanyDao implements IDao<Company> {
                     @Override
                     public Transaction.Result doTransaction(@NonNull MutableData currentData) {
                         Company company = currentData.getValue(Company.class);
+
+                        if (company == null)
+                            return Transaction.success(currentData);
+
                         switch (updateState) {
                             case INSERTED:
                                 updateCompaniesStandingsInsertedReview(company, review);
@@ -96,33 +100,30 @@ public class CompanyDao implements IDao<Company> {
     }
 
     private void updateCompaniesStandingsInsertedReview(Company company, Review review) {
-        if (company != null) {
-            int newNumOfRatings = company.getNumOfRatings() + 1;
-            double newRating = (company.getRating() * company.getNumOfRatings()
-                    + review.getRating()) / newNumOfRatings;
+        int newNumOfRatings = company.getNumOfRatings() + 1;
+        double newRating = (company.getRating() * company.getNumOfRatings()
+                + review.getRating()) / newNumOfRatings;
 
-            company.setNumOfRatings(newNumOfRatings);
-            company.setRating(newRating);
-            edit(company.getName(), company);
-        } else
-            create(new Company(review.getCompany(),
-                    review.getRating(), 1));
+        company.setNumOfRatings(newNumOfRatings);
+        company.setRating(newRating);
+        edit(company.getName(), company);
     }
 
     private void updateCompaniesStandingsRemovedReview(Company company, Review review) {
-        if (company != null) {
-            int newNumOfRatings = company.getNumOfRatings() - 1;
-            if (newNumOfRatings == 0) {
-                delete(company.getName());
-                return;
-            }
+        int newNumOfRatings = company.getNumOfRatings() - 1;
 
-            double newRating = (company.getRating() * company.getNumOfRatings()
-                    - review.getRating()) / newNumOfRatings;
-
-            company.setNumOfRatings(newNumOfRatings);
-            company.setRating(newRating);
+        if (newNumOfRatings == 0) {
+            company.setNumOfRatings(0);
+            company.setRating(0.0);
             edit(company.getName(), company);
+            return;
         }
+
+        double newRating = (company.getRating() * company.getNumOfRatings()
+                - review.getRating()) / newNumOfRatings;
+
+        company.setNumOfRatings(newNumOfRatings);
+        company.setRating(newRating);
+        edit(company.getName(), company);
     }
 }

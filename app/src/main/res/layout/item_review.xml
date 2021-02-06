@@ -21,9 +21,9 @@
     <TextView
         android:id="@+id/review_item_user_name"
         style="@style/AppTextView"
-        android:text="@string/anonymous"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="@string/anonymous"
         app:layout_constraintBottom_toTopOf="@id/review_item_time"
         app:layout_constraintStart_toEndOf="@id/review_item_guideline"
         app:layout_constraintTop_toTopOf="@id/review_item_user_profile_pic"
@@ -37,10 +37,22 @@
         app:layout_constraintStart_toStartOf="@id/review_item_user_name"
         app:layout_constraintTop_toBottomOf="@id/review_item_user_name" />
 
+    <ImageButton
+        android:id="@+id/review_item_delete"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:contentDescription="@string/delete"
+        android:src="@drawable/ic_delete_24dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/review_item_user_profile_pic"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/review_item_user_profile_pic" />
+
     <ImageView
         android:id="@+id/review_item_company_pic"
-        android:layout_width="42dp"
-        android:layout_height="42dp"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
         android:layout_marginTop="@dimen/component_margin"
         android:contentDescription="@string/company_picture"
         app:layout_constraintEnd_toEndOf="@id/review_item_user_profile_pic"

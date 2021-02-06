@@ -6,13 +6,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RatingBar;
 
-import androidx.lifecycle.ViewModelProvider;
-
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.polamokh.homeinternetreview.R;
 import com.polamokh.homeinternetreview.data.Review;
-import com.polamokh.homeinternetreview.viewmodel.ReviewViewModel;
 
 public class CreateReviewFragment extends AbstractCreateReviewFragment {
 
@@ -32,11 +29,6 @@ public class CreateReviewFragment extends AbstractCreateReviewFragment {
 
     @Override
     void initializeUi(View view) {
-        if (reviewViewModel == null) {
-            reviewViewModel = new ViewModelProvider(this)
-                    .get(ReviewViewModel.class);
-        }
-
         ratingBar = view.findViewById(R.id.review_rating_bar);
 
         TextInputLayout descriptionLayout = view.findViewById(R.id.review_description_text);

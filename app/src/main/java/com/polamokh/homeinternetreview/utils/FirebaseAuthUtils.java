@@ -11,6 +11,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.polamokh.homeinternetreview.R;
 
 import java.util.Arrays;
 import java.util.List;
@@ -32,6 +33,7 @@ public final class FirebaseAuthUtils {
     private static Intent createAuthUiIntent(List<AuthUI.IdpConfig> providers) {
         return AuthUI.getInstance()
                 .createSignInIntentBuilder()
+                .setLogo(R.drawable.launcher_icon)
                 .setIsSmartLockEnabled(false)
                 .setAvailableProviders(providers)
                 .build();

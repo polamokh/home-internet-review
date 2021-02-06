@@ -58,38 +58,67 @@
     <string name="loading_text">Loading…</string>
     <string name="company_picture">Company Picture</string>
 
-    <string name="server_client_id">123625297518-pv5rjmqsj2qbtej843jfrvd5fl9lmike.apps.googleusercontent.com</string>
+    <string name="server_client_id" translatable="false">123625297518-pv5rjmqsj2qbtej843jfrvd5fl9lmike.apps.googleusercontent.com</string>
     <string name="anonymous">Anonymous</string>
     <string name="information">Information</string>
     <string name="no_available_data">No available data.</string>
+    <string name="delete">Delete</string>
+
+    <string name="cairo">Cairo</string>
+    <string name="giza">Giza</string>
+    <string name="alexandria">Alexandria</string>
+    <string name="dakahlia">Dakahlia</string>
+    <string name="red_sea">Red Sea</string>
+    <string name="beheira">Beheira</string>
+    <string name="fayoum">Fayoum</string>
+    <string name="gharbiya">Gharbiya</string>
+    <string name="ismailia">Ismailia</string>
+    <string name="monofia">Monofia</string>
+    <string name="minya">Minya</string>
+    <string name="qaliubiya">Qaliubiya</string>
+    <string name="new_valley">New Valley</string>
+    <string name="suez">Suez</string>
+    <string name="aswan">Aswan</string>
+    <string name="assiut">Assiut</string>
+    <string name="beni_suef">Beni Suef</string>
+    <string name="port_said">Port Said</string>
+    <string name="damietta">Damietta</string>
+    <string name="sharkia">Sharkia</string>
+    <string name="south_sinai">South Sinai</string>
+    <string name="kafr_al_sheikh">Kafr Al Sheikh</string>
+    <string name="matrouh">Matrouh</string>
+    <string name="luxor">Luxor</string>
+    <string name="qena">Qena</string>
+    <string name="north_sinai">North Sinai</string>
+    <string name="sohag">Sohag</string>
 
     <string-array name="governorates">
-        <item>Cairo</item>
-        <item>Giza</item>
-        <item>Alexandria</item>
-        <item>Dakahlia</item>
-        <item>Red Sea</item>
-        <item>Beheira</item>
-        <item>Fayoum</item>
-        <item>Gharbiya</item>
-        <item>Ismailia</item>
-        <item>Monofia</item>
-        <item>Minya</item>
-        <item>Qaliubiya</item>
-        <item>New Valley</item>
-        <item>Suez</item>
-        <item>Aswan</item>
-        <item>Assiut</item>
-        <item>Beni Suef</item>
-        <item>Port Said</item>
-        <item>Damietta</item>
-        <item>Sharkia</item>
-        <item>South Sinai</item>
-        <item>Kafr Al Sheikh</item>
-        <item>Matrouh</item>
-        <item>Luxor</item>
-        <item>Qena</item>
-        <item>North Sinai</item>
-        <item>Sohag</item>
+        <item>@string/cairo</item>
+        <item>@string/giza</item>
+        <item>@string/alexandria</item>
+        <item>@string/dakahlia</item>
+        <item>@string/red_sea</item>
+        <item>@string/beheira</item>
+        <item>@string/fayoum</item>
+        <item>@string/gharbiya</item>
+        <item>@string/ismailia</item>
+        <item>@string/monofia</item>
+        <item>@string/minya</item>
+        <item>@string/qaliubiya</item>
+        <item>@string/new_valley</item>
+        <item>@string/suez</item>
+        <item>@string/aswan</item>
+        <item>@string/assiut</item>
+        <item>@string/beni_suef</item>
+        <item>@string/port_said</item>
+        <item>@string/damietta</item>
+        <item>@string/sharkia</item>
+        <item>@string/south_sinai</item>
+        <item>@string/kafr_al_sheikh</item>
+        <item>@string/matrouh</item>
+        <item>@string/luxor</item>
+        <item>@string/qena</item>
+        <item>@string/north_sinai</item>
+        <item>@string/sohag</item>
     </string-array>
 </resources>

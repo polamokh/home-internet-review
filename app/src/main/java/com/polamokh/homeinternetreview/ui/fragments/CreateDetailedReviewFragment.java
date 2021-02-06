@@ -7,14 +7,12 @@ import android.view.ViewGroup;
 import android.widget.RatingBar;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.polamokh.homeinternetreview.R;
 import com.polamokh.homeinternetreview.data.DetailedReview;
 import com.polamokh.homeinternetreview.data.Review;
-import com.polamokh.homeinternetreview.viewmodel.ReviewViewModel;
 
 public class CreateDetailedReviewFragment extends AbstractCreateReviewFragment {
 
@@ -36,11 +34,6 @@ public class CreateDetailedReviewFragment extends AbstractCreateReviewFragment {
 
     @Override
     void initializeUi(View view) {
-        if (reviewViewModel == null) {
-            reviewViewModel = new ViewModelProvider(this)
-                    .get(ReviewViewModel.class);
-        }
-
         speedRatingBar = view.findViewById(R.id.detailed_review_speed_rating);
         priceRatingBar = view.findViewById(R.id.detailed_review_price_rating);
         reliabilityRatingBar = view.findViewById(R.id.detailed_review_reliability_rating);

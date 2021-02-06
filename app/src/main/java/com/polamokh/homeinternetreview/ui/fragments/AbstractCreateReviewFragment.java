@@ -9,20 +9,14 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.ValueEventListener;
 import com.polamokh.homeinternetreview.R;
-import com.polamokh.homeinternetreview.data.Company;
 import com.polamokh.homeinternetreview.data.Review;
 import com.polamokh.homeinternetreview.data.dao.CompanyDao;
-import com.polamokh.homeinternetreview.viewmodel.ReviewViewModel;
+import com.polamokh.homeinternetreview.data.dao.ReviewDao;
 
 abstract class AbstractCreateReviewFragment extends Fragment {
     static final String EXTRA_COMPANY_NAME = "companyName";
     static final String EXTRA_GOVERNORATE_NAME = "governorateName";
-
-    ReviewViewModel reviewViewModel;
 
     EditText descriptionText;
 
@@ -32,7 +26,7 @@ abstract class AbstractCreateReviewFragment extends Fragment {
 
     private void createReview() {
         Review review = getReviewDetails();
-        reviewViewModel.create(review)
+        ReviewDao.getInstance().create(review)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful())
                         CompanyDao.getInstance()
