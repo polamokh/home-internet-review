@@ -1,7 +1,5 @@
 package com.polamokh.homeinternetreview.data;
 
-import android.net.Uri;
-
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.Exclude;
 

@@ -15,9 +15,7 @@ import com.polamokh.homeinternetreview.R;
 import com.polamokh.homeinternetreview.ui.adapters.GovernoratesAdapter;
 import com.polamokh.homeinternetreview.ui.listeners.IOnItemSelectListener;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 
 public class GovernoratesListFragment extends Fragment implements IOnItemSelectListener {
 
