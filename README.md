@@ -11,6 +11,6 @@ It's created using:
 
 
 ## Screenshots
-<img src="screenshoots\1.png" width="150">
-<img src="screenshoots\2.png" width="150">
-<img src="screenshoots\3.png" width="150">
+<img src="screenshoots\1.png" width="250">
+<img src="screenshoots\2.png" width="250">
+<img src="screenshoots\3.png" width="250">
